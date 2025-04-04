@@ -1,0 +1,474 @@
+.applicants-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .applicants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .applicant-stats {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .stat-card {
+    background-color: #f5f7fa;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 100px;
+  }
+  
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .applicant-filters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .filter-group label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    min-width: 200px;
+  }
+  
+  .applicants-list-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .applicants-list-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 10px;
+  }
+  
+  .applicants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .applicant-card {
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .applicant-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .applicant-info h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+  }
+  
+  .applicant-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .applicant-job {
+    font-weight: 500;
+    color: #3498db;
+  }
+  
+  .applicant-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.new {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+  }
+  
+  .status-badge.in-review {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+  }
+  
+  .status-badge.interview {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+  }
+  
+  .status-badge.hired {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+  }
+  
+  .status-badge.rejected {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+  }
+  
+  .applicant-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .action-btn.view {
+    background: none;
+    border: none;
+    color: #3498db;
+  }
+  
+  .applicant-details {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid #ecf0f1;
+  }
+  
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .detail-section {
+    margin-bottom: 25px;
+  }
+  
+  .detail-section h5 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 8px;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .contact-icon {
+    color: #3498db;
+  }
+  
+  .contact-item a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+  
+  .contact-item a:hover {
+    color: #3498db;
+    text-decoration: underline;
+  }
+  
+  .resume-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ecf0f1;
+  }
+  
+  .file-icon {
+    color: #e74c3c;
+    font-size: 1.5rem;
+  }
+  
+  .view-btn {
+    margin-left: auto;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .cover-letter {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ecf0f1;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .cover-letter p {
+    margin: 0;
+    line-height: 1.5;
+    color: #2c3e50;
+  }
+  
+  .experience-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .info-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .info-value {
+    color: #2c3e50;
+  }
+  
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .skill-tag {
+    background-color: #3498db;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+  
+  .notes-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    resize: vertical;
+  }
+  
+  .status-actions {
+    margin-bottom: 25px;
+  }
+  
+  .status-actions h5 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+  }
+  
+  .status-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .status-btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  
+  .status-btn.new {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+  }
+  
+  .status-btn.in-review {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+  }
+  
+  .status-btn.interview {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+  }
+  
+  .status-btn.hired {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+  }
+  
+  .status-btn.rejected {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+  }
+  
+  .status-btn.active {
+    color: white;
+  }
+  
+  .status-btn.new.active {
+    background-color: #3498db;
+  }
+  
+  .status-btn.in-review.active {
+    background-color: #f39c12;
+  }
+  
+  .status-btn.interview.active {
+    background-color: #9b59b6;
+  }
+  
+  .status-btn.hired.active {
+    background-color: #2ecc71;
+  }
+  
+  .status-btn.rejected.active {
+    background-color: #e74c3c;
+  }
+  
+  .status-btn:disabled {
+    opacity: 1;
+    cursor: default;
+  }
+  
+  .applicant-footer-actions {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .footer-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    color: white;
+  }
+  
+  .footer-btn.onboard {
+    background-color: #2ecc71;
+  }
+  
+  .footer-btn.onboard:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+  
+  .footer-btn.email {
+    background-color: #3498db;
+  }
+  
+  .no-applicants {
+    text-align: center;
+    padding: 30px;
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    color: #7f8c8d;
+  }
+  
+  @media (max-width: 992px) {
+    .details-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .applicants-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .applicant-stats {
+      justify-content: space-between;
+    }
+  
+    .applicant-filters {
+      flex-direction: column;
+    }
+  
+    .applicant-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .status-buttons {
+      justify-content: space-between;
+    }
+  
+    .applicant-footer-actions {
+      flex-direction: column;
+    }
+  }
+  
+  

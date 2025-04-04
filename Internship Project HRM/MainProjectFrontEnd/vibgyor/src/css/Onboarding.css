@@ -1,0 +1,433 @@
+.onboarding-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .onboarding-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .onboarding-stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background-color: #f5f7fa;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .add-employee-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-employee-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  .onboarding-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 25px;
+  }
+  
+  .employees-list-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .employees-list-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 10px;
+  }
+  
+  .employees-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  
+  .employee-card {
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+  }
+  
+  .employee-card:hover {
+    background-color: #ecf0f1;
+  }
+  
+  .employee-card.selected {
+    border-left-color: #3498db;
+    background-color: #ecf0f1;
+  }
+  
+  .employee-info h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+  }
+  
+  .employee-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .employee-position {
+    font-weight: 500;
+    color: #3498db;
+  }
+  
+  .employee-department {
+    color: #7f8c8d;
+  }
+  
+  .employee-start-date {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+  }
+  
+  .employee-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .progress-bar-container {
+    height: 8px;
+    background-color: #ecf0f1;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #3498db;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+  
+  .progress-text {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    align-self: flex-start;
+  }
+  
+  .status-badge.in-progress {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+  }
+  
+  .status-badge.completed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+  }
+  
+  .onboarding-details {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .employee-profile h3 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+  }
+  
+  .profile-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .meta-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .meta-value {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .employee-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .status-progress {
+    position: relative;
+  }
+  
+  .progress-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(#3498db calc(var(--progress) * 1%), #ecf0f1 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .progress-circle::before {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+  }
+  
+  .progress-circle .progress-text {
+    position: relative;
+    z-index: 1;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3498db;
+  }
+  
+  .progress-circle[data-progress="100"] {
+    background: #2ecc71;
+  }
+  
+  .progress-circle[data-progress="100"] .progress-text {
+    color: white;
+  }
+  
+  .onboarding-tasks h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 10px;
+  }
+  
+  .tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  
+  .task-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .task-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+  }
+  
+  .task-icon.document {
+    background-color: #3498db;
+  }
+  
+  .task-icon.id {
+    background-color: #9b59b6;
+  }
+  
+  .task-icon.tech {
+    background-color: #f39c12;
+  }
+  
+  .task-icon.team {
+    background-color: #2ecc71;
+  }
+  
+  .task-icon.training {
+    background-color: #e74c3c;
+  }
+  
+  .task-icon.general {
+    background-color: #7f8c8d;
+  }
+  
+  .task-details h4 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1rem;
+  }
+  
+  .task-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .task-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    color: white;
+  }
+  
+  .task-btn.start {
+    background-color: #3498db;
+  }
+  
+  .task-btn.complete {
+    background-color: #2ecc71;
+  }
+  
+  .task-completed {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #2ecc71;
+    font-weight: 500;
+  }
+  
+  .onboarding-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  
+  .action-btn {
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    color: white;
+  }
+  
+  .action-btn.email {
+    background-color: #3498db;
+  }
+  
+  .action-btn.complete {
+    background-color: #2ecc71;
+  }
+  
+  .action-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 992px) {
+    .onboarding-content {
+      grid-template-columns: 1fr;
+    }
+  
+    .employee-header {
+      flex-direction: column;
+    }
+  
+    .employee-status {
+      align-self: flex-start;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .onboarding-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+    }
+  
+    .onboarding-stats {
+      justify-content: space-between;
+    }
+  
+    .add-employee-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .profile-meta {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  
