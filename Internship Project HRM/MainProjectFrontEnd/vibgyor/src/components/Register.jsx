@@ -5,33 +5,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
 import "../css/AuthPages.css";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    password2: "",
-    first_name: "",
-    last_name: "",
-    department: "",
-    role: "",
-    manager: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [managers, setManagers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [passwordValidations, setPasswordValidations] = useState({
-    minLength: false,
-    hasUpper: false,
-    hasLower: false,
-    hasSpecial: false,
-  });
 
-  const { register } = useAuth();
+  const { register: authRegister } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,8 +30,6 @@ const Register = () => {
         setDepartments(response.data.departments);
         setRoles(response.data.roles);
         setManagers(response.data.managers);
-        console.log(response)
-        
       } catch (err) {
         console.error("Error fetching departments:", err);
       }
@@ -50,60 +37,32 @@ const Register = () => {
 
     fetchDepartments();
   }, []);
- const passwordValidation = (value) => {
-   if (!/(?=.*?[A-Z])/.test(value)) {
-     return "Password must contain at least one uppercase letter.";
-   }
-   if (!/(?=.*?[a-z])/.test(value)) {
-     return "Password must contain at least one lowercase letter.";
-   }
-   if (!/(?=.*?[0-9])/.test(value)) {
-     return "Password must contain at least one digit.";
-   }
-   if (!/(?=.*?[#?!@$%^&*-])/.test(value)) {
-     return "Password must contain at least one special character.";
-   }
-   if (value.length < 8) {
-     return "Password must be at least 8 characters long.";
-   }
-   return true; // return true if all conditions are met
- };
-  const validatePassword = (password) => {
-    const validations = {
-      minLength: password.length >= 8,
-      hasUpper: /[A-Z]/.test(password),
-      hasLower: /[a-z]/.test(password),
-      hasSpecial: /[^A-Za-z0-9]/.test(password),
-    };
-    setPasswordValidations(validations);
+
+  const passwordValidation = (value) => {
+    if (!value) return "Password is required";
+    if (!/(?=.*?[A-Z])/.test(value)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!/(?=.*?[a-z])/.test(value)) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!/(?=.*?[0-9])/.test(value)) {
+      return "Password must contain at least one digit.";
+    }
+    if (!/(?=.*?[#?!@$%^&*-])/.test(value)) {
+      return "Password must contain at least one special character.";
+    }
+    if (value.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    return true;
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-
-    if (name === "password") {
-      validatePassword(value);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.password2) {
-      setError("Passwords do not match");
-      return;
-    }
-
+  const onSubmit = async (formData) => {
     try {
       setError("");
-      setLoading(true);
-      console.log(formData);
-      
-      await register({
+
+      await authRegister({
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -126,8 +85,6 @@ const Register = () => {
         setError("An error occurred during registration. Please try again.");
       }
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -141,19 +98,27 @@ const Register = () => {
 
         {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="first_name">First Name</label>
               <input
                 type="text"
                 id="first_name"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                disabled={loading}
-                required
+                {...register("first_name", {
+                  required: "First Name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Minimum length should be 2",
+                  },
+                })}
+                disabled={isSubmitting}
               />
+              {errors.first_name && (
+                <span className="error-message">
+                  {errors.first_name.message}
+                </span>
+              )}
             </div>
 
             <div className="form-group">
@@ -161,12 +126,20 @@ const Register = () => {
               <input
                 type="text"
                 id="last_name"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                disabled={loading}
-                required
+                {...register("last_name", {
+                  required: "Last Name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Minimum length should be 2",
+                  },
+                })}
+                disabled={isSubmitting}
               />
+              {errors.last_name && (
+                <span className="error-message">
+                  {errors.last_name.message}
+                </span>
+              )}
             </div>
           </div>
 
@@ -175,12 +148,18 @@ const Register = () => {
             <input
               type="text"
               id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              disabled={loading}
-              required
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Minimum length should be 3",
+                },
+              })}
+              disabled={isSubmitting}
             />
+            {errors.username && (
+              <span className="error-message">{errors.username.message}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -188,23 +167,28 @@ const Register = () => {
             <input
               type="email"
               id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={loading}
-              required
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Please enter a valid email",
+                },
+              })}
+              disabled={isSubmitting}
             />
+            {errors.email && (
+              <span className="error-message">{errors.email.message}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label htmlFor="department">Department</label>
             <select
               id="department"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              disabled={loading}
-              required
+              {...register("department", {
+                required: "Department is required",
+              })}
+              disabled={isSubmitting}
             >
               <option value="">Select Department</option>
               {departments.map((dept) => (
@@ -213,17 +197,19 @@ const Register = () => {
                 </option>
               ))}
             </select>
+            {errors.department && (
+              <span className="error-message">{errors.department.message}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label htmlFor="role">Role</label>
             <select
               id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              disabled={loading}
-              required
+              {...register("role", {
+                required: "Role is required",
+              })}
+              disabled={isSubmitting}
             >
               <option value="">Select Role</option>
               {roles.map((role) => (
@@ -232,27 +218,32 @@ const Register = () => {
                 </option>
               ))}
             </select>
+            {errors.role && (
+              <span className="error-message">{errors.role.message}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label htmlFor="manager">Manager</label>
             <select
               id="manager"
-              name="manager"
-              value={formData.manager}
-              onChange={handleChange}
-              disabled={loading}
-              required
+              {...register("manager", {
+                required: "Manager is required",
+              })}
+              disabled={isSubmitting}
             >
               <option value="">Select Manager</option>
               {managers.map((manager) => (
                 <option key={manager.id} value={manager.url}>
-                  {(manager.firs_tname + manager.last_name).length>0
+                  {(manager.first_name + manager.last_name).length > 0
                     ? manager.first_name + " " + manager.last_name
                     : manager.username}
                 </option>
               ))}
             </select>
+            {errors.manager && (
+              <span className="error-message">{errors.manager.message}</span>
+            )}
           </div>
 
           <div className="form-row">
@@ -261,45 +252,15 @@ const Register = () => {
               <input
                 type="password"
                 id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                disabled={loading}
-                required
+                {...register("password", {
+                  required: "Password is required",
+                  validate: passwordValidation,
+                })}
+                disabled={isSubmitting}
               />
-              <div className="password-requirements">
-                <p>Password must include:</p>
-                <ul>
-                  <li
-                    className={
-                      passwordValidations.minLength ? "valid" : "invalid"
-                    }
-                  >
-                    ✅ At least 8 characters
-                  </li>
-                  <li
-                    className={
-                      passwordValidations.hasUpper ? "valid" : "invalid"
-                    }
-                  >
-                    ✅ An uppercase letter
-                  </li>
-                  <li
-                    className={
-                      passwordValidations.hasLower ? "valid" : "invalid"
-                    }
-                  >
-                    ✅ A lowercase letter
-                  </li>
-                  <li
-                    className={
-                      passwordValidations.hasSpecial ? "valid" : "invalid"
-                    }
-                  >
-                    ✅ A special character (!@#$...)
-                  </li>
-                </ul>
-              </div>
+              {errors.password && (
+                <span className="error-message">{errors.password.message}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -308,17 +269,28 @@ const Register = () => {
                 type="password"
                 id="password2"
                 name="password2"
-                value={formData.password2}
-                onChange={handleChange}
-                disabled={loading}
-                required
+                {...register("password2", {
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === watch("password") || "Passwords do not match",
+                })}
+                disabled={isSubmitting}
               />
+              {errors.password2 && (
+                <span className="error-message">
+                  {errors.password2.message}
+                </span>
+              )}
             </div>
           </div>
 
           <div className="form-footer">
-            <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? "Creating Account..." : "Create Account"}
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Creating Account..." : "Create Account"}
             </button>
           </div>
 

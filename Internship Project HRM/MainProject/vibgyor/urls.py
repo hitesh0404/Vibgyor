@@ -20,6 +20,7 @@ from rest_framework.routers import DefaultRouter
 from accounts.views import UserView
 from accounts.views import CombinedListViewSet
 from rest_framework.authtoken.views import obtain_auth_token
+from accounts.views import LoginView
 router = DefaultRouter()
 router.register(r'user',UserView)
 # router.register(r'combined-data', CombinedListViewSet, basename='combined-data')
@@ -33,5 +34,6 @@ urlpatterns = [
     path('api/',include('department.urls')),
     path('api/',include('leader.urls')),
     path('api/',include('task.urls')),
-    path('api-token-auth/',obtain_auth_token,name='api_token_auth'),
+    # path('api-token-auth/',obtain_auth_token,name='api_token_auth'),
+    path('api-token-auth/',LoginView.as_view(),name='api_token_auth'),
 ]

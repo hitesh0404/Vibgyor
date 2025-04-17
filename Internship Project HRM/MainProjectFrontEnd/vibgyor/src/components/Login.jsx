@@ -279,82 +279,108 @@
   // }
 
   // export default Login
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 
-  import { useState } from "react";
-  import { Link, useNavigate } from "react-router-dom";
-  import { useAuth } from "../contexts/AuthContext";
-  const Login = () => {
-      const {login} =  useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
+const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!username || !password) {
-      setError("Please enter both username and password.");
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
+  const [error, setError] = useState("");
+
+  const onSubmit = async (data) => {
     try {
       setError("");
-      setLoading(true);
-      const success = await login(username, password);
+      const success = await login(data.username, data.password);
       if (success) {
         navigate("/");
       } else {
-        setError("Failed to log in");
+        setError("Invalid username or password");
       }
     } catch (err) {
       setError("An error occurred during login. Please try again.");
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>Vibgyor HRMS</h1>
-        <p>Sign in to your account</p>
+        <div className="auth-header">
+          <h1>Vibgyor HRMS</h1>
+          <p>Sign in to your account</p>
+        </div>
 
         {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={loading}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-            required
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter your username"
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters",
+                },
+              })}
+              disabled={isSubmitting}
+            />
+            {errors.username && (
+              <span className="error-message">{errors.username.message}</span>
+            )}
+          </div>
 
-        <Link to="/forgot-password">Forgot Password?</Link>
-        <Link to="/register">Sign Up</Link>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+              disabled={isSubmitting}
+            />
+            {errors.password && (
+              <span className="error-message">{errors.password.message}</span>
+            )}
+          </div>
+
+          <div className="form-footer">
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in..." : "Login"}
+            </button>
+          </div>
+
+          <div className="auth-links">
+            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/register">Create an account</Link>
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
 export default Login;
-  
-
-  

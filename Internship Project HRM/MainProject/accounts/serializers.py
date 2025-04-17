@@ -16,8 +16,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         # Hash password before saving
+        # validated_data.pop('password2')
         validated_data['password'] = make_password(validated_data['password'])
+        
+        # department = Department.objects.get(dept_name = validated_data.pop['department'])[0]
+        # role = Department.objects.get(id = validated_data.pop['role'] )[0]
+        # manager_email = validated_data.pop('manager', None)
+        # manager = None
+        # if manager_email:
+        #     manager = User.objects.get(email=manager_email)
+        # user = User.objects.create(
+        #     department=department,
+        #     role=role,
+        #     manager=manager,
+        #     **validated_data
+        # )
+        # print(role,department,manager)
         return super().create(validated_data)
+
 
     def update(self, instance, validated_data):
         # Hash password if it's being updated
@@ -40,20 +56,20 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 #         fields = ['role','department','manager']
 
 
-class RoleSerializer(ModelSerializer):
+class RoleSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Role
         fields = "__all__"
 
-class DepartmentSerializer(ModelSerializer):
+class DepartmentSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Department
         fields = "__all__"
         
-class ManagerSerializer(ModelSerializer):
+class ManagerSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['username','email','role','department','manager']
+        fields = ['url','first_name','last_name','role','department','manager']
 
 # class UserPermissionSerializer(ModelSerializer):
 #     class Meta:

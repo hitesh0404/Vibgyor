@@ -20,7 +20,7 @@ class  UserView(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
-
+    
 # class UserRegisterView(ListModelMixin):
 #     queryset = User.objects.all()
 #     serializer_class = UserRegisterSerializer
@@ -39,25 +39,36 @@ class CombinedListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         roles = Role.objects.all()
         departments = Department.objects.all()
         managers = User.objects.filter(manager__isnull=False)  # Get users who have a manager
-
+       
         # Serialize each of the data sets
-        roles_serializer = RoleSerializer(roles, many=True)
-        departments_serializer = DepartmentSerializer(departments, many=True)
-        managers_serializer = ManagerSerializer(managers, many=True)
+        roles_serializer = RoleSerializer(roles, many=True,context= {'request':request})
+        departments_serializer = DepartmentSerializer(departments, many=True,context= {'request':request})
+        managers_serializer = ManagerSerializer(managers, many=True,context= {'request':request})
 
         # Return all data in a single response
         return Response({
+           
             "roles": roles_serializer.data,
             "departments": departments_serializer.data,
             "managers": managers_serializer.data
         })
 
 class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
 
-        user = authenticate(username=username, password=password)
+        # user = authenticate(username=username, password=password)
+        user = authenticate(username=username, 
+                       password=password)
+        print("here")
+        if not user:
+                try:
+                    user = User.objects.get(email=username)
+                    user = authenticate(username=user.username, password=password)
+                except User.DoesNotExist:
+                    print("error")
         if user:
             token, _ = Token.objects.get_or_create(user=user)
             return Response({
@@ -65,7 +76,7 @@ class LoginView(APIView):
                 "user": {
                     "username": user.username,
                     "role": user.role.RoleName if user.role else "Employee",
-                    "department": user.department.name if user.department else None
+                    "department": user.department.dept_name if user.department else None
                 }
             })
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
