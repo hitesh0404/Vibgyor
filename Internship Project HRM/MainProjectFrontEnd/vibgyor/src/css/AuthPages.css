@@ -6,6 +6,30 @@
     background: linear-gradient(135deg, #3498db, #2c3e50);
     padding: 20px;
   }
+  .password-requirements {
+  margin-top: 5px;
+  font-size: 0.85em;
+  color: #444;
+}
+
+.password-requirements ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 5px 0;
+}
+
+.password-requirements li {
+  margin-bottom: 3px;
+}
+
+.password-requirements li.valid {
+  color: green;
+}
+
+.password-requirements li.invalid {
+  color: red;
+}
+
   
   .auth-card {
     background-color: #ffffff;

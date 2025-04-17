@@ -1,12 +1,10 @@
-// 
+"use client";
 
-"use client"
-
-import { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
-import api from "../services/api"
-import "../css/AuthPages.css"
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import "../css/AuthPages.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -17,48 +15,94 @@ const Register = () => {
     first_name: "",
     last_name: "",
     department: "",
-  })
-  const [departments, setDepartments] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+    role: "",
+    manager: "",
+  });
 
-  const { register } = useAuth()
-  const navigate = useNavigate()
+  const [departments, setDepartments] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [passwordValidations, setPasswordValidations] = useState({
+    minLength: false,
+    hasUpper: false,
+    hasLower: false,
+    hasSpecial: false,
+  });
+
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await api.get("/departments/")
-        setDepartments(response.data)
+        const response = await api.get("api/accounts/combined-data/");
+        setDepartments(response.data.departments);
+        setRoles(response.data.roles);
+        setManagers(response.data.managers);
+        console.log(response)
+        
       } catch (err) {
-        console.error("Error fetching departments:", err)
+        console.error("Error fetching departments:", err);
       }
-    }
+    };
 
-    fetchDepartments()
-  }, [])
+    fetchDepartments();
+  }, []);
+ const passwordValidation = (value) => {
+   if (!/(?=.*?[A-Z])/.test(value)) {
+     return "Password must contain at least one uppercase letter.";
+   }
+   if (!/(?=.*?[a-z])/.test(value)) {
+     return "Password must contain at least one lowercase letter.";
+   }
+   if (!/(?=.*?[0-9])/.test(value)) {
+     return "Password must contain at least one digit.";
+   }
+   if (!/(?=.*?[#?!@$%^&*-])/.test(value)) {
+     return "Password must contain at least one special character.";
+   }
+   if (value.length < 8) {
+     return "Password must be at least 8 characters long.";
+   }
+   return true; // return true if all conditions are met
+ };
+  const validatePassword = (password) => {
+    const validations = {
+      minLength: password.length >= 8,
+      hasUpper: /[A-Z]/.test(password),
+      hasLower: /[a-z]/.test(password),
+      hasSpecial: /[^A-Za-z0-9]/.test(password),
+    };
+    setPasswordValidations(validations);
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+
+    if (name === "password") {
+      validatePassword(value);
+    }
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    // Validation
     if (formData.password !== formData.password2) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     try {
-      setError("")
-      setLoading(true)
-
+      setError("");
+      setLoading(true);
+      console.log(formData);
+      
       await register({
         username: formData.username,
         email: formData.email,
@@ -66,25 +110,26 @@ const Register = () => {
         first_name: formData.first_name,
         last_name: formData.last_name,
         department: formData.department,
-      })
+        role: formData.role,
+        manager: formData.manager,
+      });
 
-      navigate("/login")
+      navigate("/login");
     } catch (err) {
       if (err.response && err.response.data) {
-        // Format validation errors
-        const errors = err.response.data
+        const errors = err.response.data;
         const errorMessages = Object.keys(errors)
           .map((key) => `${key}: ${errors[key].join(", ")}`)
-          .join("\n")
-        setError(errorMessages)
+          .join("\n");
+        setError(errorMessages);
       } else {
-        setError("An error occurred during registration. Please try again.")
+        setError("An error occurred during registration. Please try again.");
       }
-      console.error(err)
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="auth-container">
@@ -163,8 +208,48 @@ const Register = () => {
             >
               <option value="">Select Department</option>
               {departments.map((dept) => (
-                <option key={dept.id} value={dept.id}>
+                <option key={dept.id} value={dept.url}>
                   {dept.dept_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="role">Role</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              disabled={loading}
+              required
+            >
+              <option value="">Select Role</option>
+              {roles.map((role) => (
+                <option key={role.id} value={role.url}>
+                  {role.RoleName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="manager">Manager</label>
+            <select
+              id="manager"
+              name="manager"
+              value={formData.manager}
+              onChange={handleChange}
+              disabled={loading}
+              required
+            >
+              <option value="">Select Manager</option>
+              {managers.map((manager) => (
+                <option key={manager.id} value={manager.url}>
+                  {(manager.firs_tname + manager.last_name).length>0
+                    ? manager.first_name + " " + manager.last_name
+                    : manager.username}
                 </option>
               ))}
             </select>
@@ -182,6 +267,39 @@ const Register = () => {
                 disabled={loading}
                 required
               />
+              <div className="password-requirements">
+                <p>Password must include:</p>
+                <ul>
+                  <li
+                    className={
+                      passwordValidations.minLength ? "valid" : "invalid"
+                    }
+                  >
+                    ✅ At least 8 characters
+                  </li>
+                  <li
+                    className={
+                      passwordValidations.hasUpper ? "valid" : "invalid"
+                    }
+                  >
+                    ✅ An uppercase letter
+                  </li>
+                  <li
+                    className={
+                      passwordValidations.hasLower ? "valid" : "invalid"
+                    }
+                  >
+                    ✅ A lowercase letter
+                  </li>
+                  <li
+                    className={
+                      passwordValidations.hasSpecial ? "valid" : "invalid"
+                    }
+                  >
+                    ✅ A special character (!@#$...)
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="form-group">
@@ -210,8 +328,7 @@ const Register = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
-
+export default Register;

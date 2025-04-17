@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setError(null)
-      const response = await api.post("/auth/register/", userData)
+      const response = await api.post("/api/accounts/user/", userData);
       return response.data
     } catch (error) {
       setError("Registration failed")
