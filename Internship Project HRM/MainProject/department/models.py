@@ -18,5 +18,5 @@ class Department(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     status=models.BooleanField(default=True)
     WeekOff=models.IntegerField(choices=WEEKDAYS,blank=False,default=5)
-    def _str_(self):
-        return f"{self.dept_name}"
+    def __str__(self):
+        return f"{self.dept_name} "

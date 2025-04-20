@@ -12,7 +12,7 @@ class Team(models.Model):
     Created_by=models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name="Team_Created_By",null=True)
     Created_on=models.DateField(default=timezone.now)
     active=models.BooleanField(default=True)
-    def _str_(self):
+    def __str__(self):
         return f"Team Name :- {self.Name} Leader :- {self.leader.username}"
 
 
@@ -22,7 +22,7 @@ class Team_Member(models.Model):
     active=models.BooleanField(default=True)
     joined_on=models.DateTimeField(default=timezone.now)
 
-    def _str_(self):
+    def __str__(self):
         return f"{Team.Name} Member :- {self.Emp.username}"
 
 
@@ -42,7 +42,7 @@ class SubTaskAssigned(models.Model):
                                 ("Not completed","Not completed")
                                 ],
                                 default="pending")
-    def _str_(self):
+    def __str__(self):
         return f"Sub Task of {self.Team} emp :{self.emp}"
 
 class SubTaskSubmit(models.Model):
@@ -53,5 +53,5 @@ class SubTaskSubmit(models.Model):
     comments=models.CharField(max_length=100,null=True,blank=True)
     status=models.CharField(max_length=20,choices=[("Approved","Approved"),("Rejected","Rejected"),("pending","pending")],default="pending")
     
-    def _str_(self):
+    def __str__(self):
         return f" Team Task Submited Team:-{self.subtask.Team.Name} submited by: {self.emp} "

@@ -1,16 +1,16 @@
 from rest_framework import serializers
-from .models import Task_Assigned, Task_Submitted, TeamTaskAssign, TeamTaskSubmitted
+from .models import TaskAssigned, TaskSubmitted, TeamTaskAssign, TeamTaskSubmitted
 from accounts.models import User
 
 class TaskAssignedSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Task_Assigned
+        model = TaskAssigned
         fields = "__all__"
 
 
 class TaskSubmittedSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Task_Submitted
+        model = TaskSubmitted
         fields = "__all__"
 
 

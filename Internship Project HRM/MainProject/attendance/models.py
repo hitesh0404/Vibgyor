@@ -22,7 +22,7 @@ class AttendanceDetails(models.Model):
     shiftStartTime = models.TimeField(choices=SHIFT_CHOICES, null=False, blank=False)
     shiftEndTime = models.TimeField(choices=SHIFT_CHOICES, null=False, blank=False)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.emp.username} - {self.shiftStartTime} to {self.shiftEndTime}"
 
 
@@ -38,7 +38,7 @@ class Attendance(models.Model):
     class Meta:
         unique_together = ('emp', 'date') 
         
-    def _str_(self):
+    def __str__(self):
         return f"{self.emp.username} - {self.date} - {self.status}"
 
 
@@ -51,5 +51,5 @@ class Leave(models.Model):
     reason = models.TextField()
     status = models.CharField(max_length=20,choices=[('Pending', 'Pending'),('Approved', 'Approved'),('Rejected', 'Rejected')],default='Pending')
     
-    def _str_(self):
+    def __str__(self):
         return f"{self.emp.username} - {self.date_from} to {self.date_to} - {self.status}"

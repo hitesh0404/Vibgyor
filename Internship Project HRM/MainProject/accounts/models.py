@@ -27,4 +27,4 @@ class User(AbstractUser):
     def Namee(self):
         return f"{self.first_name} {self.last_name} "
     def __str__(self):
-        return f"{self.role} : {self.username}  - {self.department}"
+        return f"{self.role.RoleName} : {self.username} -\tworking in  - {self.department.dept_name} department"

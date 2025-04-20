@@ -4,7 +4,7 @@ from django.utils import timezone
 # Create your models here.
     
 
-class Task_Assigned(models.Model):
+class TaskAssigned(models.Model):
     Task=models.TextField(max_length=300)
     Attachments=models.FileField(upload_to="Task_Assign/",blank=True,null=True)
     deadline=models.DateField(null=False,blank=False)
@@ -26,8 +26,8 @@ Rating_choices = [
 
 
 
-class Task_Submitted(models.Model):
-    Task=models.OneToOneField(Task_Assigned,on_delete=models.CASCADE,unique=True)
+class TaskSubmitted(models.Model):
+    Task=models.OneToOneField(TaskAssigned,on_delete=models.CASCADE,unique=True)
     emp=models.ForeignKey(User,on_delete=models.PROTECT,null=False,blank=False,related_name="Task_Submmited_by")
     Attachments=models.FileField(upload_to="Submitted_Task/",blank=True,null=True)
     submitted_on=models.DateTimeField(default=timezone.now)

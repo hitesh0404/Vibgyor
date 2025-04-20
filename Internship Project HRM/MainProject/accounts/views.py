@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 # Create your views here.
 from rest_framework import viewsets
-from  .models import User
+from .models import User
 from .serializers import UserSerializer
 from rest_framework import permissions
 from rest_framework.mixins import ListModelMixin
@@ -103,8 +103,12 @@ class CurrentUserView(APIView):
 
     def get(self, request):
         user = request.user
-        return Response({
+        return Response( {
+            'id':user.id,
+            'firstName':user.first_name,
+            'lastName' : user.last_name,
             "username": user.username,
+            'email': user.email,
             "role": user.role.RoleName if user.role else "Employee",
             "department": user.department.dept_name if user.department else None,
         })

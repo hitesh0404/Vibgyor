@@ -1,16 +1,16 @@
 from rest_framework import viewsets
-from .models import Task_Assigned, Task_Submitted, TeamTaskAssign, TeamTaskSubmitted
+from .models import TaskAssigned, TaskSubmitted, TeamTaskAssign, TeamTaskSubmitted
 from .serializers import TaskAssignedSerializer, TaskSubmittedSerializer, TeamTaskAssignSerializer, TeamTaskSubmittedSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class TaskAssignedViewSet(viewsets.ModelViewSet):
-    queryset = Task_Assigned.objects.all()
+    queryset = TaskAssigned.objects.all()
     serializer_class = TaskAssignedSerializer
     permission_classes = [IsAuthenticated]
 
 
 class TaskSubmittedViewSet(viewsets.ModelViewSet):
-    queryset = Task_Submitted.objects.all()
+    queryset = TaskSubmitted.objects.all()
     serializer_class = TaskSubmittedSerializer
     permission_classes = [IsAuthenticated]
 
