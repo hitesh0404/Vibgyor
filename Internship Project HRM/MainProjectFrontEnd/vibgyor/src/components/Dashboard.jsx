@@ -188,7 +188,7 @@ import { FaClipboardCheck, FaCalendarAlt, FaTasks, FaChartLine } from "react-ico
 import "../css/Dashboard.css"
 
 const Dashboard = () => {
-  const { currentUser } = useAuth()
+  const { currentUser } = useAuth();
   const [stats, setStats] = useState({
     attendanceRate: 0,
     pendingTasks: 0,
@@ -260,7 +260,7 @@ const Dashboard = () => {
         <div className="dashboard-container">
           <div className="welcome-card">
             <div className="welcome-text">
-              <h2>Welcome back, {currentUser?.first_name || "User"}!</h2>
+              <h2>Welcome back, {currentUser.firstName || "User"}!</h2>
               <p>Here's what's happening with your account today.</p>
             </div>
             <div className="date-display">

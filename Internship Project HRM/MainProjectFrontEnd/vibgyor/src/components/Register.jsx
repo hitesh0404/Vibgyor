@@ -41,10 +41,10 @@ const Register = () => {
   const passwordValidation = (value) => {
     if (!value) return "Password is required";
     if (!/(?=.*?[A-Z])/.test(value)) {
-      return "Password must contain at least one uppercase letter.";
+        return "Password must contain at least one uppercase letter.";
     }
     if (!/(?=.*?[a-z])/.test(value)) {
-      return "Password must contain at least one lowercase letter.";
+        return "Password must contain at least one lowercase letter.";
     }
     if (!/(?=.*?[0-9])/.test(value)) {
       return "Password must contain at least one digit.";

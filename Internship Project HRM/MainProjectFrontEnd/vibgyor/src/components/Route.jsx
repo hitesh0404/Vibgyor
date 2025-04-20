@@ -6,6 +6,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import ForgetPassword from './ForgetPassword';
+import EditProfile from './EditProfile';
 export default function Route() {
  return createBrowserRouter([
    {
@@ -13,49 +14,45 @@ export default function Route() {
      element: (
        <>
          <Navbar />
-         <Home/>
+         <Home />
        </>
      ),
-     children:[
-      {
-      path:"/login",
-      element:(
-        <>
-        <Login/>
-        </>
-      
-      )
-    },
-    {
-      path:"/register",
-      element:(
-        <>
-        <Register/>
-        </>
-      
-      )
-    },
-    {
-      path: "/forgot-password",  
-      element: (
-        <>
-          
-          <ForgetPassword />
-        </>
-      )
-    },
-     ]
+     children: [
+       {
+         path: "/login",
+         element: (
+           <>
+             <Login />
+           </>
+         ),
+       },
+       {
+         path: "/register",
+         element: (
+           <>
+             <Register />
+           </>
+         ),
+       },
+       {
+         path: "/forgot-password",
+         element: (
+           <>
+             <ForgetPassword />
+           </>
+         ),
+       },
+     ],
    },
    {
-    path: "/dashboard",
-    element: (
-      <>
-        <Navbar />
-        <Dashboard/>
-      </>
-    ),
-  },
+     path: "/dashboard",
+     element: (
+       <>
+         <Navbar />
+         <Dashboard />
+       </>
+     ),
+   },
   
-   
  ]);
 }
