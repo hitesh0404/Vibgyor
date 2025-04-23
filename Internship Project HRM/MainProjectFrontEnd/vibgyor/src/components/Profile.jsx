@@ -10,8 +10,8 @@ const Profile = () => {
   const [disableForm, setDisableForm] = useState(true); // Controls whether form is editable
   const { currentUser, setCurrentUser } = useAuth();
   const [profileData, setProfileData] = useState({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
     department: "",
@@ -22,33 +22,31 @@ const Profile = () => {
 
   // State to hold backend errors
   const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
   });
-
+function fetchProfileData () {
+  setIsLoading(true);
+  // Simulate API call (You should replace this with actual API call)
+  setTimeout(() => {
+    setProfileData({
+      firstName: currentUser.firstName || "",
+      lastName: currentUser.lastName || "",
+      username: currentUser.username || "",
+      email: currentUser.email || "",
+      department: currentUser.department || "",
+      role: currentUser.role || "",
+    });
+    setIsLoading(false);
+  }, 1000); // Simulating delay
+};
   // Fetch and set profile data when currentUser changes
   useEffect(() => {
-    if (currentUser) {
-      const fetchProfileData = () => {
-        setIsLoading(true);
-
-        // Simulate API call (You should replace this with actual API call)
-        setTimeout(() => {
-          setProfileData({
-            first_name: currentUser.firstName || "",
-            last_name: currentUser.lastName || "",
-            username: currentUser.username || "",
-            email: currentUser.email || "",
-            department: currentUser.department || "",
-            role: currentUser.role || "",
-          });
-          setIsLoading(false);
-        }, 1000); // Simulating delay
-      };
-
+    if(currentUser) 
       fetchProfileData();
-    }
-  }, []);
+  },[currentUser] );
 
   function handleEditForm() {
     setDisableForm(false); // Enable form for editing
@@ -60,18 +58,34 @@ const Profile = () => {
   }
 
   async function handleSubmitForm() {
+    let newErrors = {};
     if (!isValidEmail(profileData.email)) {
-      alert("Please enter a valid email address.");
+      newErrors.email = "Please enter a valid email address.";
+    }
+    if (!profileData.username.trim()){
+      newErrors.username = "UserName is Required. "
+    }
+    if (!profileData.firstName.trim()) {
+      newErrors.firstName = "First name is required.";
+    } else if (!isNaN(profileData.firstName)) {
+      newErrors.firstName = "First name cannot be numeric.";
+    }
+    if (!profileData.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
+    } else if (!isNaN(profileData.lastName)) {
+      newErrors.lastName = "Last name cannot be numeric.";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-
     setIsSubmitting(true);
     // setDisableForm(true);
 
     try {
       const response = await api.put(`/api/accounts/user/${currentUser.id}/`, {
-        first_name: profileData.first_name,
-        last_name: profileData.last_name,
+        first_name: profileData.firstName,
+        last_name: profileData.lastName,
         email: profileData.email,
         username: profileData.username,
         partial: true,
@@ -80,14 +94,14 @@ const Profile = () => {
       if (response.status === 200) {
         setCurrentUser({
           ...currentUser,
-          firstName: profileData.first_name,
-          lastName: profileData.last_name,
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
           email: profileData.email,
           username: profileData.username,
         });
         console.log(currentUser, profileData);
         setDisableForm(true);
-        setErrors({ username: "", email: "" }); // Clear errors on successful submission
+        setErrors({ username: "", email: "", firstName: "", lastName: "" }); // Clear errors on successful submission
       }
     } catch (error) {
       console.error("Error updating profile", error);
@@ -99,13 +113,12 @@ const Profile = () => {
           username: errorData.username ? errorData.username[0] : "",
           email: errorData.email ? errorData.email[0] : "",
         });
-      } 
-      else{
+      } else {
         setDisableForm(true);
       }
     } finally {
       setIsSubmitting(false);
-        // setDisableForm(true);
+      // setDisableForm(true);
     }
   }
 
@@ -140,15 +153,22 @@ const Profile = () => {
               <span className="detail-label">First Name:</span>
               <span className="detail-value">
                 {disableForm ? (
-                  profileData.first_name
+                  profileData.firstName
                 ) : (
-                  <input
-                    type="text"
-                    onChange={updateValue}
-                    value={profileData.first_name}
-                    name="first_name"
-                    style={{ border: "2px inset #EBE9ED" }}
-                  />
+                  <>
+                    <input
+                      type="text"
+                      onChange={updateValue}
+                      value={profileData.firstName}
+                      name="firstName"
+                      style={{ border: "2px inset #EBE9ED" }}
+                    />
+                    {errors.firstName && (
+                      <div style={{ color: "red", marginTop: "5px" }}>
+                        {errors.firstName}
+                      </div>
+                    )}
+                  </>
                 )}
               </span>
             </div>
@@ -158,15 +178,22 @@ const Profile = () => {
               <span className="detail-label">Last Name:</span>
               <span className="detail-value">
                 {disableForm ? (
-                  profileData.last_name
+                  profileData.lastName
                 ) : (
-                  <input
-                    type="text"
-                    onChange={updateValue}
-                    value={profileData.last_name}
-                    name="last_name"
-                    style={{ border: "2px inset #EBE9ED" }}
-                  />
+                  <>
+                    <input
+                      type="text"
+                      onChange={updateValue}
+                      value={profileData.lastName}
+                      name="lastName"
+                      style={{ border: "2px inset #EBE9ED" }}
+                    />
+                    {errors.lastName && (
+                      <div style={{ color: "red", marginTop: "5px" }}>
+                        {errors.lastName}
+                      </div>
+                    )}
+                  </>
                 )}
               </span>
             </div>
@@ -247,9 +274,18 @@ const Profile = () => {
                 ? "Edit Profile"
                 : "Update"}
             </button>
-            <button className="action-button change-password">
-              Change Password
-            </button>
+            {disableForm ? (
+              <button className="action-button change-password">
+                Change Password
+              </button>
+            ) : (
+              <button onClick={()=>{
+                setDisableForm(true)
+                fetchProfileData()
+              }} className="action-button btn btn-primary Cancel-Update">
+                Cancel Update
+              </button>
+            )}
           </div>
         </div>
       </div>

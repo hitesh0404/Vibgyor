@@ -186,7 +186,7 @@ import MainLayout from "./layout/MainLayout"
 import { useAuth } from "../contexts/AuthContext"
 import { FaClipboardCheck, FaCalendarAlt, FaTasks, FaChartLine } from "react-icons/fa"
 import "../css/Dashboard.css"
-
+import api from "../services/api"
 const Dashboard = () => {
   const { currentUser } = useAuth();
   const [stats, setStats] = useState({
@@ -201,6 +201,17 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+      const fetchUserStats = async () => {
+        try {
+          const response = await api.get("api/accounts/users/state/");
+          console.log("Stats:", response.data);
+          setStats(response.data); // Assuming you’re using useState({}) with setStats
+        } catch (error) {
+          console.error("Failed to fetch user stats", error);
+        }
+      };
+
+      
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true)
@@ -208,17 +219,17 @@ const Dashboard = () => {
         // For demonstration, we're using dummy data
 
         // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
+         
         // Sample data
-        setStats({
-          attendanceRate: 95,
-          pendingTasks: 3,
-          completedTasks: 12,
-          leaveBalance: 15,
-          teamMembers: 8,
-          performanceScore: 87,
-        })
+        // setStats({
+        //   attendanceRate: 95,
+        //   pendingTasks: 3,
+        //   completedTasks: 12,
+        //   leaveBalance: 15,
+        //   teamMembers: 8,
+        //   performanceScore: 87,
+        // 
+        // })
 
         setRecentActivities([
           { id: 1, type: "task", message: 'You completed task "Update user documentation"', time: "2 hours ago" },
@@ -233,8 +244,12 @@ const Dashboard = () => {
       }
     }
 
-    fetchDashboardData()
-  }, [])
+    if (currentUser) {
+      setIsLoading(false);
+      fetchUserStats();
+      fetchDashboardData();
+    }
+  }, [currentUser])
 
   const getActivityIcon = (type) => {
     switch (type) {
@@ -248,7 +263,7 @@ const Dashboard = () => {
         return <FaChartLine className="activity-icon" />
     }
   }
-
+  
   return (
     <MainLayout title="Dashboard">
       {isLoading ? (

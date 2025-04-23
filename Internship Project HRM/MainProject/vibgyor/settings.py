@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!dbo=0q%rrkf5a9+ux#8fvy4pcqgx9h!(29!v!r#g%ww5dhxcq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -61,11 +61,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'vibgyor.urls'
-
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,11 +87,13 @@ from decouple import config
 import os
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-      
+        "ENGINE": "django.db.backends.mysql",  # Use MySQL engine
+        "OPTIONS": {
+            "read_default_file": os.path.join(BASE_DIR, "my.cnf"),
+        },
     }
 }
+
 
 
 # Password validation

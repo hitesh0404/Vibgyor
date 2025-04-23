@@ -61,7 +61,6 @@ const Register = () => {
   const onSubmit = async (formData) => {
     try {
       setError("");
-
       await authRegister({
         username: formData.username,
         email: formData.email,
@@ -192,7 +191,7 @@ const Register = () => {
             >
               <option value="">Select Department</option>
               {departments.map((dept) => (
-                <option key={dept.id} value={dept.url}>
+                <option key={dept.dept_name} value={dept.url}>
                   {dept.dept_name}
                 </option>
               ))}
@@ -213,7 +212,7 @@ const Register = () => {
             >
               <option value="">Select Role</option>
               {roles.map((role) => (
-                <option key={role.id} value={role.url}>
+                <option key={role.RoleName} value={role.url}>
                   {role.RoleName}
                 </option>
               ))}
@@ -234,7 +233,7 @@ const Register = () => {
             >
               <option value="">Select Manager</option>
               {managers.map((manager) => (
-                <option key={manager.id} value={manager.url}>
+                <option key={manager.url} value={manager.url}>
                   {(manager.first_name + manager.last_name).length > 0
                     ? manager.first_name + " " + manager.last_name
                     : manager.username}

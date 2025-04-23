@@ -11,7 +11,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         # fields = '__all__'  # or list all fields explicitly
         exclude = ['user_permissions','groups']
         extra_kwargs = {
-            'password': {'write_only': True, 'required':False }
+            'password': {'write_only': True, 'required':False },
+            'role': {'write_only': True, 'required':False }
         }
 
    
@@ -33,7 +34,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         #     **validated_data
         # )
         # print(role,department,manager)
-        return super().craete(validated_data)
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
         # Hash password if it's being updated
@@ -61,10 +62,11 @@ class RoleSerializer(HyperlinkedModelSerializer):
         model = Role
         fields = "__all__"
 
+
 class DepartmentSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Department
-        fields = "__all__"
+        exclude = ['location']
         
 class ManagerSerializer(HyperlinkedModelSerializer):
     class Meta:

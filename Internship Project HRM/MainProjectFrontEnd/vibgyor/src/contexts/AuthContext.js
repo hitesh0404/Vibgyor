@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.get("api/accounts/users/me/");
       setCurrentUser(response.data);
-      console.log(response);
+      // console.log(response);
       
       setUserRole(response.data.role || "Employee");
       setIsAuthenticated(true);
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         password,
       });
       const token  = response.data.token
-      console.log(token);
+      // console.log(token);
       localStorage.setItem("token", token)
       // console.log(localStorage.getItem("token"));
       api.defaults.headers.common["Authorization"] = `Token ${token}`;
