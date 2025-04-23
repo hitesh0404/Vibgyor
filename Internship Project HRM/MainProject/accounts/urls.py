@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import CombinedListViewSet, RoleViewSet, UserView, CurrentUserView
+from .views import CombinedListViewSet, RoleViewSet, UserView, CurrentUserView,CurrentUserStateView
 
 router = DefaultRouter()
 router.register(r'combined-data', CombinedListViewSet, basename='combined-data')
@@ -11,5 +11,6 @@ router.register(r'user', UserView, basename="user")
 urlpatterns = [
     path('accounts/', include(router.urls)),
     # Manually add the CurrentUserView endpoint
-    path('accounts/users/me/', CurrentUserView.as_view(), name='current-user'),  # Corrected the URL path
+    path('accounts/users/me/', CurrentUserView.as_view(), name='current-user'), 
+    path('accounts/users/state/', CurrentUserStateView.as_view(), name='current-user-state'), 
 ]
