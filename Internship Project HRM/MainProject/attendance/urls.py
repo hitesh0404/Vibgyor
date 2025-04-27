@@ -9,4 +9,5 @@ router.register(r'leave', LeaveViewSet, basename='leave')
 
 urlpatterns = [
     path('attendance/', include(router.urls)),
+    path('attendance_status/',AttendanceStatus.as_view())
 ]
