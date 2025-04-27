@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import MainLayout from "./layout/MainLayout";
 import { useAuth } from "../contexts/AuthContext";
-import "../css/Profile.css";
+import styles from "../css/Profile.module.css";
 import api from "../services/api";
 
 const Profile = () => {
@@ -139,158 +139,168 @@ function fetchProfileData () {
     );
   }
 
-  return (
-    <MainLayout title="Profile">
-      <div className="profile-container">
-        <div className="profile-card">
-          <div className="profile-header">
-            <h2>My Profile</h2>
-          </div>
+ return (
+   <MainLayout title="Profile">
+     <div className={styles["profile-container"]}>
+       <div className={styles["profile-card"]}>
+         <div className={styles["profile-header"]}>
+           <h2>My Profile</h2>
+         </div>
 
-          <div className="profile-details">
-            {/* First Name */}
-            <div className="detail-item">
-              <span className="detail-label">First Name:</span>
-              <span className="detail-value">
-                {disableForm ? (
-                  profileData.firstName
-                ) : (
-                  <>
-                    <input
-                      type="text"
-                      onChange={updateValue}
-                      value={profileData.firstName}
-                      name="firstName"
-                      style={{ border: "2px inset #EBE9ED" }}
-                    />
-                    {errors.firstName && (
-                      <div style={{ color: "red", marginTop: "5px" }}>
-                        {errors.firstName}
-                      </div>
-                    )}
-                  </>
-                )}
-              </span>
-            </div>
+         <div className={styles["profile-details"]}>
+           {/* First Name */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>First Name:</span>
+             <span className={styles["detail-value"]}>
+               {disableForm ? (
+                 profileData.firstName
+               ) : (
+                 <>
+                   <input
+                     type="text"
+                     onChange={updateValue}
+                     value={profileData.firstName}
+                     name="firstName"
+                     className={styles["profile-input"]}
+                   />
+                   {errors.firstName && (
+                     <div style={{ color: "red", marginTop: "5px" }}>
+                       {errors.firstName}
+                     </div>
+                   )}
+                 </>
+               )}
+             </span>
+           </div>
 
-            {/* Last Name */}
-            <div className="detail-item">
-              <span className="detail-label">Last Name:</span>
-              <span className="detail-value">
-                {disableForm ? (
-                  profileData.lastName
-                ) : (
-                  <>
-                    <input
-                      type="text"
-                      onChange={updateValue}
-                      value={profileData.lastName}
-                      name="lastName"
-                      style={{ border: "2px inset #EBE9ED" }}
-                    />
-                    {errors.lastName && (
-                      <div style={{ color: "red", marginTop: "5px" }}>
-                        {errors.lastName}
-                      </div>
-                    )}
-                  </>
-                )}
-              </span>
-            </div>
+           {/* Last Name */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>Last Name:</span>
+             <span className={styles["detail-value"]}>
+               {disableForm ? (
+                 profileData.lastName
+               ) : (
+                 <>
+                   <input
+                     type="text"
+                     onChange={updateValue}
+                     value={profileData.lastName}
+                     name="lastName"
+                     className={styles["profile-input"]}
+                   />
+                   {errors.lastName && (
+                     <div style={{ color: "red", marginTop: "5px" }}>
+                       {errors.lastName}
+                     </div>
+                   )}
+                 </>
+               )}
+             </span>
+           </div>
 
-            {/* Username */}
-            <div className="detail-item">
-              <span className="detail-label">Username:</span>
-              <span className="detail-value">
-                {disableForm ? (
-                  profileData.username
-                ) : (
-                  <>
-                    <input
-                      type="text"
-                      onChange={updateValue}
-                      value={profileData.username}
-                      name="username"
-                      style={{ border: "2px inset #EBE9ED" }}
-                    />
-                    {errors.username && (
-                      <div style={{ color: "red", marginTop: "5px" }}>
-                        {errors.username}
-                      </div>
-                    )}
-                  </>
-                )}
-              </span>
-            </div>
+           {/* Username */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>Username:</span>
+             <span className={styles["detail-value"]}>
+               {disableForm ? (
+                 profileData.username
+               ) : (
+                 <>
+                   <input
+                     type="text"
+                     onChange={updateValue}
+                     value={profileData.username}
+                     name="username"
+                     className={styles["profile-input"]}
+                   />
+                   {errors.username && (
+                     <div style={{ color: "red", marginTop: "5px" }}>
+                       {errors.username}
+                     </div>
+                   )}
+                 </>
+               )}
+             </span>
+           </div>
 
-            {/* Email */}
-            <div className="detail-item">
-              <span className="detail-label">Email:</span>
-              <span className="detail-value">
-                {disableForm ? (
-                  profileData.email
-                ) : (
-                  <>
-                    <input
-                      type="text"
-                      onChange={updateValue}
-                      value={profileData.email}
-                      name="email"
-                      style={{ border: "2px inset #EBE9ED" }}
-                    />
-                    {errors.email && (
-                      <div style={{ color: "red", marginTop: "5px" }}>
-                        {errors.email}
-                      </div>
-                    )}
-                  </>
-                )}
-              </span>
-            </div>
+           {/* Email */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>Email:</span>
+             <span className={styles["detail-value"]}>
+               {disableForm ? (
+                 profileData.email
+               ) : (
+                 <>
+                   <input
+                     type="text"
+                     onChange={updateValue}
+                     value={profileData.email}
+                     name="email"
+                     className={styles["profile-input"]}
+                   />
+                   {errors.email && (
+                     <div style={{ color: "red", marginTop: "5px" }}>
+                       {errors.email}
+                     </div>
+                   )}
+                 </>
+               )}
+             </span>
+           </div>
 
-            {/* Department (Non-editable) */}
-            <div className="detail-item">
-              <span className="detail-label">Department:</span>
-              <span className="detail-value">{profileData.department}</span>
-            </div>
+           {/* Department */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>Department:</span>
+             <span className={styles["detail-value"]}>
+               {profileData.department}
+             </span>
+           </div>
 
-            {/* Role (Non-editable) */}
-            <div className="detail-item">
-              <span className="detail-label">Role:</span>
-              <span className="detail-value">{profileData.role}</span>
-            </div>
-          </div>
+           {/* Role */}
+           <div className={styles["detail-item"]}>
+             <span className={styles["detail-label"]}>Role:</span>
+             <span className={styles["detail-value"]}>{profileData.role}</span>
+           </div>
+         </div>
 
-          <div className="profile-actions">
-            <button
-              type="button"
-              className="action-button edit"
-              onClick={disableForm ? handleEditForm : handleSubmitForm}
-              disabled={isSubmitting}
-            >
-              {isSubmitting
-                ? "Saving..."
-                : disableForm
-                ? "Edit Profile"
-                : "Update"}
-            </button>
-            {disableForm ? (
-              <button className="action-button change-password">
-                Change Password
-              </button>
-            ) : (
-              <button onClick={()=>{
-                setDisableForm(true)
-                fetchProfileData()
-              }} className="action-button btn btn-primary Cancel-Update">
-                Cancel Update
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </MainLayout>
-  );
+         <div className={styles["profile-actions"]}>
+           <button
+             type="button"
+             className={`${styles["action-button"]} ${styles["edit"]}`}
+             onClick={disableForm ? handleEditForm : handleSubmitForm}
+             disabled={isSubmitting}
+           >
+             {isSubmitting
+               ? "Saving..."
+               : disableForm
+               ? "Edit Profile"
+               : "Update"}
+           </button>
+
+           {disableForm ? (
+             <button
+               className={`${styles["action-button"]} ${styles["change-password"]}`}
+             >
+               Change Password
+             </button>
+           ) : (
+             <button
+               onClick={() => {
+                 setDisableForm(true);
+                 fetchProfileData();
+                 setErrors({});
+               }}
+               className={`${styles["action-button"]} btn btn-primary ${styles["Cancel-Update"]}`}
+             >
+               Cancel Update
+             </button>
+           )}
+         </div>
+       </div>
+     </div>
+   </MainLayout>
+ );
+
 };
 
 export default Profile;

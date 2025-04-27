@@ -5,9 +5,10 @@ import MainLayout from "./layout/MainLayout"
 import { useAuth } from "../contexts/AuthContext"
 import { FaCalendarAlt, FaClock, FaCheckCircle, FaTimesCircle } from "react-icons/fa"
 import "../css/Attendance.css"
+import api from "../services/api"
 
 const Attendance = () => {
-  const { currentUser } = useAuth()
+  const { currentUser } = useAuth();
   const [attendanceStatus, setAttendanceStatus] = useState({
     checkedIn: false,
     checkedOut: false,
@@ -37,14 +38,14 @@ const Attendance = () => {
       try {
         setIsLoading(true)
         // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        let data = await api.get("api/attendance_status/");
 
         // Sample data - in a real app, this would come from your API
         setAttendanceStatus({
           checkedIn: true,
           checkedOut: false,
-          checkinTime: new Date(new Date().setHours(9, 5, 0)),
-          checkoutTime: null,
+          checkinTime: data.checkinTime,
+          checkoutTime: data.checkedOut,
         })
 
         setAttendanceHistory([
