@@ -37,6 +37,13 @@ class Attendance(models.Model):
 
     class Meta:
         unique_together = ('emp', 'date') 
+        constraints = [
+            models.UniqueConstraint(fields=['emp','date', 'status'], name='unique_emp_status')  
+        ]
+        indexes = [
+            models.Index(fields=['date']),
+            models.Index(fields=['emp', 'status'])  
+        ]
         
     def __str__(self):
         return f"{self.emp.username} - {self.date} - {self.status}"
