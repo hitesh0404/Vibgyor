@@ -58,34 +58,43 @@ class CombinedListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             "managers": managers_serializer.data
         })
 
+# class LoginView(APIView):
+#     permission_classes = [permissions.AllowAny]
+#     def post(self, request):
+#         username = request.data.get("username")
+#         password = request.data.get("password")
+
+#         # user = authenticate(username=username, password=password)
+#         user = authenticate(username=username, 
+#                        password=password)
+#         print("here")
+#         if not user:
+#                 try:
+#                     user = User.objects.get(email=username)
+#                     user = authenticate(username=user.username, password=password)
+#                 except User.DoesNotExist:
+#                     print("error")
+#         if user:
+#             token, _ = Token.objects.get_or_create(user=user)
+#             return Response({
+#                 "token": token.key,  # Send back token
+#                 "user": {
+#                     "username": user.username,
+#                     "role": user.role.RoleName if user.role else "Employee",
+#                     "department": user.department.dept_name if user.department else None
+#                 }
+#             })
+#         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+from .serializers import JWTLoginSerializer
+
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
+
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
-
-        # user = authenticate(username=username, password=password)
-        user = authenticate(username=username, 
-                       password=password)
-        print("here")
-        if not user:
-                try:
-                    user = User.objects.get(email=username)
-                    user = authenticate(username=user.username, password=password)
-                except User.DoesNotExist:
-                    print("error")
-        if user:
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({
-                "token": token.key,  # Send back token
-                "user": {
-                    "username": user.username,
-                    "role": user.role.RoleName if user.role else "Employee",
-                    "department": user.department.dept_name if user.department else None
-                }
-            })
-        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-
+        serializer = JWTLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class Register(View):
     pass
 
@@ -162,3 +171,5 @@ class CurrentUserStateView(APIView):
             "teamMembers": team_members,
             "performanceScore": performance_score,
         })
+    
+

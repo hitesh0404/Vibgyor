@@ -34,6 +34,14 @@ urlpatterns = [
     path('api/',include('department.urls')),
     path('api/',include('leader.urls')),
     path('api/',include('task.urls')),
+    path('',include('accounts_google.urls')),
     # path('api-token-auth/',obtain_auth_token,name='api_token_auth'),
+    path('api-token-auth/', LoginView.as_view(), name='jwt-login'),
     path('api-token-auth/',LoginView.as_view(),name='api_token_auth'),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG :
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
