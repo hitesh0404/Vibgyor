@@ -77,3 +77,55 @@ class ManagerSerializer(HyperlinkedModelSerializer):
 #     class Meta:
 #         model = Permission
 #         fields = "__all__"
+
+# accounts/serializers.py
+
+from rest_framework import serializers
+from django.contrib.auth import authenticate
+from .models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+
+class JWTLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+    access = serializers.CharField(read_only=True)
+    refresh = serializers.CharField(read_only=True)
+    user_data = serializers.DictField(read_only=True)
+
+    def validate(self, data):
+        username_or_email = data.get("username")
+        password = data.get("password")
+
+        # Try to authenticate with username first
+        user = authenticate(username=username_or_email, password=password)
+
+        # If failed, try to use email to fetch the user
+        if not user:
+            try:
+                user_obj = User.objects.get(email=username_or_email)
+                user = authenticate(username=user_obj.username, password=password)
+            except User.DoesNotExist:
+                pass
+
+        if not user:
+            raise serializers.ValidationError("Invalid credentials")
+
+        if not user.is_active:
+            raise serializers.ValidationError("User account is disabled.")
+
+        # Generate JWT token pair
+        refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
+
+        # Optional: Add custom claims or user data
+        user_data = {
+            "username": user.username,
+            "role": user.role.RoleName if user.role else None,
+            "department": user.department.dept_name if user.department else None,
+        }
+
+        return {
+            "refresh": str(refresh),
+            "access": str(access),
+            "user_data": user_data
+        }
