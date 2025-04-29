@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AccountsGoogleConfig(AppConfig):
+class AccountsSocialConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'accounts_google'
+    name = 'accounts_social'
