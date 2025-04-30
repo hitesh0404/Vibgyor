@@ -18,26 +18,21 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from accounts.views import UserView
-from accounts.views import CombinedListViewSet
-from rest_framework.authtoken.views import obtain_auth_token
-from accounts.views import LoginView
+from accounts.views import LoginView,CustomTokenRefreshView
 router = DefaultRouter()
 router.register(r'user',UserView)
-# router.register(r'combined-data', CombinedListViewSet, basename='combined-data')
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
     path('api/',include('accounts.urls')),
-    # path('api/',),
     path('api/',include('attendance.urls')),
     path('api/',include('department.urls')),
     path('api/',include('leader.urls')),
     path('api/',include('task.urls')),
-    path('',include('accounts_google.urls')),
-    # path('api-token-auth/',obtain_auth_token,name='api_token_auth'),
-    path('api-token-auth/', LoginView.as_view(), name='jwt-login'),
-    path('api-token-auth/',LoginView.as_view(),name='api_token_auth'),
+    path('api-token-auth/', LoginView.as_view(), name='api_token_auth'),
+    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='custom_token_refresh'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static

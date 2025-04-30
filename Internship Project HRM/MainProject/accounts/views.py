@@ -1,16 +1,12 @@
-from django.shortcuts import render
 from django.views import View
-# Create your views here.
-from rest_framework import viewsets
-from .models import User
-from .serializers import UserSerializer
-from rest_framework import permissions
-from rest_framework.mixins import ListModelMixin
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from django.contrib.auth import authenticate
-from rest_framework import status
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework import viewsets, mixins, permissions, status
+from .models import User, Role, Department
+from .serializers import RoleSerializer, DepartmentSerializer, ManagerSerializer, UserSerializer, JWTLoginSerializer
 from attendance.models import Attendance,UserLeaveBalance
 from django.utils.timezone import now
 from task.models import TaskAssigned
@@ -25,15 +21,7 @@ class  UserView(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
-    
-# class UserRegisterView(ListModelMixin):
-#     queryset = User.objects.all()
-#     serializer_class = UserRegisterSerializer
-from rest_framework import viewsets, mixins
-from rest_framework.response import Response
-from .models import User, Role, Department
-from .serializers import RoleSerializer, DepartmentSerializer, ManagerSerializer
-
+  
 class CombinedListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     A custom viewset that combines roles, departments, and managers into a single list view.
@@ -58,35 +46,6 @@ class CombinedListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             "managers": managers_serializer.data
         })
 
-# class LoginView(APIView):
-#     permission_classes = [permissions.AllowAny]
-#     def post(self, request):
-#         username = request.data.get("username")
-#         password = request.data.get("password")
-
-#         # user = authenticate(username=username, password=password)
-#         user = authenticate(username=username, 
-#                        password=password)
-#         print("here")
-#         if not user:
-#                 try:
-#                     user = User.objects.get(email=username)
-#                     user = authenticate(username=user.username, password=password)
-#                 except User.DoesNotExist:
-#                     print("error")
-#         if user:
-#             token, _ = Token.objects.get_or_create(user=user)
-#             return Response({
-#                 "token": token.key,  # Send back token
-#                 "user": {
-#                     "username": user.username,
-#                     "role": user.role.RoleName if user.role else "Employee",
-#                     "department": user.department.dept_name if user.department else None
-#                 }
-#             })
-#         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-from .serializers import JWTLoginSerializer
-
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -102,19 +61,10 @@ class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
     permission_classes = permissions.IsAuthenticated
-# class UserPermissionsViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserPermissionSerializer
-#     permission_classes = permissions.IsAuthenticated
 
-
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
 
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         user = request.user
         return Response( {
@@ -171,5 +121,31 @@ class CurrentUserStateView(APIView):
             "teamMembers": team_members,
             "performanceScore": performance_score,
         })
-    
 
+class CustomTokenRefreshView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        refresh_token = request.data.get("refresh")
+
+        if not refresh_token:
+            return Response({"detail": "Refresh token is required."}, status=400)
+
+        try:
+            refresh = RefreshToken(refresh_token)
+            access_token = refresh.access_token
+
+            user = User.objects.get(id=refresh["user_id"])
+
+            user_data = {
+                "username": user.username,
+                "role": user.role.RoleName if user.role else None,
+                "department": user.department.dept_name if user.department else None,
+            }
+
+            return Response({
+                "access": str(access_token),
+                "user_data": user_data
+            })
+        except (TokenError, InvalidToken, User.DoesNotExist) as e:
+            return Response({"detail": "Invalid refresh token"}, status=401)
