@@ -36,10 +36,10 @@
 
 // export default api
 
+// const API_BASE_URL = "https://hitesh0404.pythonanywhere.com/"; // Update with your backend URL
 import axios from "axios";
 
-// const API_BASE_URL = "https://hitesh0404.pythonanywhere.com/"; // Update with your backend URL
-const API_BASE_URL = "http://127.0.0.1:8000/";  // Update with your backend URL
+const API_BASE_URL = "http://127.0.0.1:8000/"; // or your production URL
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -49,9 +49,9 @@ const api = axios.create({
 });
 
 // Attach token if exists
-const token = localStorage.getItem("token");
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Token ${token.trim()}`;
+const access = localStorage.getItem("access");
+if (access) {
+  api.defaults.headers.common["Authorization"] = `Bearer ${access.trim()}`;
 }
 
 export default api;

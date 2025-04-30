@@ -27,10 +27,6 @@ SECRET_KEY = 'django-insecure-!dbo=0q%rrkf5a9+ux#8fvy4pcqgx9h!(29!v!r#g%ww5dhxcq
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 
 
 # Application definition
@@ -46,22 +42,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'accounts.apps.AccountsConfig',
-    'accounts_google.apps.AccountsGoogleConfig',
     'department.apps.DepartmentConfig',
     'task.apps.TaskConfig',
     'leader.apps.LeaderConfig',
     'attendance.apps.AttendanceConfig',
     'corsheaders',
     'rest_framework.authtoken',
-    'allauth',
-    'allauth.account', 
-    'allauth.socialaccount', 
-    'allauth.socialaccount.providers.google',
-    'dj_rest_auth.registration'
 ]
 SITE_ID = 1
 CORS_ALLOW_ALL_ORIGINS = True
-REST_USE_JWT = True
+# REST_USE_JWT = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    
 ]
 ROOT_URLCONF = 'vibgyor.urls'
 import os
@@ -162,6 +152,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -175,45 +166,12 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-load_dotenv(".env")
-GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
-GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
-GOOGLE_OAUTH_CALLBACK_URL = os.getenv("GOOGLE_OAUTH_CALLBACK_URL")
+# load_dotenv(".env")
+# GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
+# GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
+# GOOGLE_OAUTH_CALLBACK_URL = os.getenv("GOOGLE_OAUTH_CALLBACK_URL")
 # django-allauth (social)
 # Authenticate if local account with this email address already exists
-SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
-SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": ["profile", "email"],
-        "AUTH_PARAMS": {
-            "access_type": "offline",  # Use "offline" to get refresh tokens
-            "prompt": "consent",       # Ensures user is always prompted for consent (helps in dev)
-        },
-        "APP": {
-            "client_id": GOOGLE_OAUTH_CLIENT_ID,
-            "secret": GOOGLE_OAUTH_CLIENT_SECRET,
-            "key": "",
-        },
-    }
-}
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
