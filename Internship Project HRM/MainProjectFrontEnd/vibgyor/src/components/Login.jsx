@@ -283,8 +283,17 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-
-
+import GoogleLoginButton from "./GoogleLoginButton";
+import React from "react";
+class ErrorBoundary extends React.Component {
+  componentDidCatch(error, info) {
+    if (error.message.includes("param is not legal")) return;
+    console.error(error);
+  }
+  render() {
+    return this.props.children;
+  }
+}
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -372,6 +381,12 @@ const Login = () => {
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </div>
+          <ErrorBoundary>
+            <GoogleLoginButton
+              onSuccess={() => navigate("/")} // Redirect on success
+              onError={(err) => setError(err)} // Propagate errors
+            />
+          </ErrorBoundary>
 
           <div className="auth-links">
             <Link to="/forgot-password">Forgot Password?</Link>

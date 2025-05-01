@@ -50,11 +50,11 @@ const RoleRoute = ({ children, requiredRole }) => {
   if (requiredRole && !hasPermission(requiredRole)) {
     return <Navigate to="/" />
   }
-
   return children
 }
 
 function App() {
+
   return (
     <AuthProvider>
       <Router>
