@@ -22,16 +22,27 @@ from accounts.views import LoginView,CustomTokenRefreshView
 router = DefaultRouter()
 router.register(r'user',UserView)
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
     path('api/',include('accounts.urls')),
+<<<<<<< HEAD
     path('',include('accounts_social.urls')),
+=======
+>>>>>>> main
     path('api/',include('attendance.urls')),
     path('api/',include('department.urls')),
     path('api/',include('leader.urls')),
     path('api/',include('task.urls')),
+<<<<<<< HEAD
     path('api/token/', LoginView.as_view(), name='api_token_auth'),
+=======
+    path('api-token-auth/', LoginView.as_view(), name='api_token_auth'),
+>>>>>>> main
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='custom_token_refresh'),
 ]
 from django.conf import settings
