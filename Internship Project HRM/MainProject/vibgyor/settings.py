@@ -1,3 +1,5 @@
+
+
 """
 Django settings for vibgyor project.
 
@@ -26,9 +28,17 @@ SECRET_KEY = 'django-insecure-!dbo=0q%rrkf5a9+ux#8fvy4pcqgx9h!(29!v!r#g%ww5dhxcq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
+ALLOWED_HOSTS = ['hitesh0404.pythonanywhere.com','127.0.0.1']
+=======
 ALLOWED_HOSTS = ['*']
 
+>>>>>>> main
 
+CORS_ALLOWED_ORIGINS = [
+    "https://vibgyor-sigma.vercel.app",
+    "http://localhost:3000",
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'django_extensions',
     'accounts.apps.AccountsConfig',
@@ -48,8 +59,17 @@ INSTALLED_APPS = [
     'attendance.apps.AttendanceConfig',
     'corsheaders',
     'rest_framework.authtoken',
+<<<<<<< HEAD
+    'rest_framework_simplejwt', 
+   
+]
+
+SITE_ID = 1
+
+=======
 ]
 SITE_ID = 1
+>>>>>>> main
 CORS_ALLOW_ALL_ORIGINS = True
 # REST_USE_JWT = True
 MIDDLEWARE = [
@@ -61,6 +81,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+<<<<<<< HEAD
+      # Add the account middleware:
+=======
+>>>>>>> main
     
 ]
 ROOT_URLCONF = 'vibgyor.urls'
@@ -82,7 +106,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'vibgyor.wsgi.application'
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
+USE_I18N = True
 
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale
+USE_L10N = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -97,6 +127,11 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+]
 
 
 # Password validation
@@ -150,17 +185,37 @@ AUTH_USER_MODEL = "accounts.User"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+<<<<<<< HEAD
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+=======
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+>>>>>>> main
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+<<<<<<< HEAD
+    'DEFAULT_THROTTLE_RATES': {
+        'client-config': '100/hour',  # Prevent abuse
+    }
+=======
+>>>>>>> main
 }
 
 
 from datetime import timedelta
+<<<<<<< HEAD
+
+
+load_dotenv(".env")
+GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
+GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
+GOOGLE_OAUTH_CALLBACK_URL = os.getenv("GOOGLE_OAUTH_CALLBACK_URL")
+=======
 SIMPLE_JWT = { 
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -170,8 +225,23 @@ SIMPLE_JWT = {
 # GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
 # GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
 # GOOGLE_OAUTH_CALLBACK_URL = os.getenv("GOOGLE_OAUTH_CALLBACK_URL")
+>>>>>>> main
 # django-allauth (social)
 # Authenticate if local account with this email address already exists
 
 # LOGIN_REDIRECT_URL = '/'
+<<<<<<< HEAD
 LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_REDIRECT_URL = 'http://localhost:3000/'
+# Add to your settings.py
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+}
+# settings.py
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+=======
+LOGOUT_REDIRECT_URL = '/'
+>>>>>>> main

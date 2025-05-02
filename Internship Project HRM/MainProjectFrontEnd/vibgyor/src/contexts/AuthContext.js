@@ -81,6 +81,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const access = localStorage.getItem("access");
     const user_data_str = localStorage.getItem("user_data");
+<<<<<<< HEAD
+=======
 
     if (access) {
       api.defaults.headers.common["Authorization"] = `Bearer ${access}`;
@@ -94,11 +96,53 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, [fetchCurrentUser]);
+>>>>>>> main
 
+    if (access) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      if (user_data_str) {
+        const user_data = JSON.parse(user_data_str); // ✅ Correctly parsed
+        fetchCurrentUser(user_data);
+      } else {
+        fetchCurrentUser(); // fallback
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [fetchCurrentUser]);
+  // AuthContext.js
+  const loginWithGoogle = async (googleToken) => {
+    try {
+      const response = await api.post("/api/auth/google/", {
+        token: googleToken,
+      });
+      const { access, refresh, user_data } = response.data;
+
+      localStorage.setItem("access", access);
+      localStorage.setItem("refresh", refresh);
+      localStorage.setItem("user_data", JSON.stringify(user_data));
+
+      api.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      fetchCurrentUser(user_data);
+      setCurrentUser(user_data);
+      setIsAuthenticated(true);
+      return true;
+    } catch (error) {
+      console.error("Google login failed:", error);
+      setError("Google authentication failed");
+    }
+  };
+
+  // Add to value object
+  
   const login = async (username, password) => {
     try {
       setError(null);
+<<<<<<< HEAD
+      const response = await api.post("/api/token/", {
+=======
       const response = await api.post("/api-token-auth/", {
+>>>>>>> main
         username,
         password,
       });
@@ -162,6 +206,10 @@ export const AuthProvider = ({ children }) => {
     hasPermission,
     setCurrentUser,
     fetchRefreshedToken,
+<<<<<<< HEAD
+    loginWithGoogle,
+=======
+>>>>>>> main
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

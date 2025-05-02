@@ -39,6 +39,10 @@
 // const API_BASE_URL = "https://hitesh0404.pythonanywhere.com/"; // Update with your backend URL
 import axios from "axios";
 
+<<<<<<< HEAD
+// const API_BASE_URL = "https://hitesh0404.pythonanywhere.com/"; // Update with your backend URL
+=======
+>>>>>>> main
 const API_BASE_URL = "http://127.0.0.1:8000/"; // or your production URL
 
 const api = axios.create({
