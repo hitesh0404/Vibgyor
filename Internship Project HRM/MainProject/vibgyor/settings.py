@@ -63,7 +63,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 CORS_ALLOW_ALL_ORIGINS = True
 # REST_USE_JWT = True
 MIDDLEWARE = [
@@ -217,3 +217,8 @@ SIMPLE_JWT = {
 # settings.py
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
+EMAIL_HOST =  os.getenv("EMAIL_HOST")  # e.g., for Gmail
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") 

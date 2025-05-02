@@ -19,6 +19,7 @@ from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from accounts.views import UserView
 from accounts.views import LoginView,CustomTokenRefreshView
+from django.contrib.auth.views import PasswordResetView
 router = DefaultRouter()
 router.register(r'user',UserView)
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
@@ -35,6 +36,7 @@ urlpatterns = [
     path('',include('accounts_social.urls')),
     path('api/token/', LoginView.as_view(), name='api_token_auth'),
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='custom_token_refresh'),
+    path('reset-password/', PasswordResetView.as_view()),   
 ]
 from django.conf import settings
 from django.conf.urls.static import static

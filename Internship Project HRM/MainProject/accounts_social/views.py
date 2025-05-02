@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework import response
 from django.contrib.auth.hashers import make_password
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from accounts.models import Role,Department
 from department.models import Location
+from django.conf import settings
 User = get_user_model()
 import secrets
 class GoogleLoginView(APIView):
@@ -87,3 +89,13 @@ class GoogleLoginView(APIView):
 
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=400)
+
+
+class GoogleOauthClientId(APIView):
+    permission_classes = [permissions.AllowAny]
+    def post(self,request):
+        return response(
+            {
+                "GOOGLE_OAUTH_CLIENT_ID":settings.GOOGLE_OAUTH_CLIENT_ID
+            }
+        )
