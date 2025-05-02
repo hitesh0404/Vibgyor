@@ -16,7 +16,7 @@ class Role(models.Model):
         return f"{self.RoleName}"
 
 class User(AbstractUser):
-    role=models.ForeignKey(Role,on_delete=models.DO_NOTHING,null=True,blank=False)
+    role=models.ForeignKey(Role,on_delete=models.DO_NOTHING,null=False,blank=False)
     contact_details = models.CharField(max_length=13,default="",null=False,blank=False)
     gender=models.CharField(max_length=10,choices=gender_choice,default="Male")
     dob=models.DateField(null=True)
